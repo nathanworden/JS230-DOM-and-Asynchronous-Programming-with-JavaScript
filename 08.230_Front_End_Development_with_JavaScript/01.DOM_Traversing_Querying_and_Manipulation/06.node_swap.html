@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Node Swap</title>
+  </head>
+  <body>
+    <div id="1">1
+      <div id="4">4</div>
+      <div id="5">5
+        <div id="6">6</div>
+      </div>
+    </div>
+    <div id="2">2</div>
+    <div id="3">3
+      <div id="7">7</div>
+      <div id="8">8</div>
+      <div id="9">9</div>
+    </div>
+    <!-- <script>
+      function nodeswap(first, second) {
+        first = document.getElementById(first);
+        second = document.getElementById(second);
+        parentOfFirst = first.parentNode;
+        parentOfSecond = second.parentNode;
+        var cloneOfSecond;
+        var cloneOfFirst;
+
+        if (first && second && valid(first, second)) {
+          console.log('valid');
+          cloneOfSecond = second.cloneNode(true);
+          cloneOfFirst = first.cloneNode(true);
+          parentOfFirst.replaceChild(cloneOfSecond, first);
+          parentOfSecond.replaceChild(cloneOfFirst, second);
+        } else {
+          return undefined;
+        }
+      }
+
+      function valid(first, second) {
+        let currentFirst = first;
+        let currentSecond = second;
+        do {
+          if (currentFirst.parentNode === second) {
+            console.log('currentFirst is in second!'); 
+            return false;
+          }
+          currentFirst = currentFirst.parentNode;
+        } while (currentFirst.nodeName !== 'BODY');
+
+        do {
+          if (currentSecond.parentNode === first) {
+            console.log('currentSecond is in first!'); 
+            return false;
+          }
+          currentSecond = currentSecond.parentNode;
+        } while (currentSecond.nodeName !== 'BODY');
+
+        return true
+      }
+
+      // console.log(nodeswap(1, 20) === undefined);
+      // console.log(nodeswap(1, 4) === undefined);
+      // console.log(nodeswap(9, 3) === undefined);
+      // console.log(nodeswap(1, 2));
+      console.log(nodeswap(3, 1));
+      console.log(nodeswap(7, 9));
+    </script> -->
+    <script name='Book Answer'>
+      function nodeSwap(node1Id, node2Id) {
+        var node1 = document.getElementById(node1Id);
+        var node2 = document.getElementById(node2Id);
+
+        if (!isInvalidSwap(node1, node2)) {
+          var node1Clone = node1.cloneNode(true);
+          var node2Clone = node2.cloneNode(true);
+          var node1Parent = node1.parentNode;
+          var node2Parent = node2.parentNode;
+
+          node1Parent.replaceChild(node2Clone, node1);
+          node2Parent.replaceChild(node1Clone, node2);
+          return true;
+        }
+      }
+
+      function isInvalidSwap(node1, node2) {
+        return ((!node1 || !node2) || node1.contains(node2) || node2.contains(node1));
+      }
+
+      console.log(nodeSwap(1, 2));
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

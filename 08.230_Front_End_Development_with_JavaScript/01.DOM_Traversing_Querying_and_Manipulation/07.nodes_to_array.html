@@ -1,0 +1,103 @@
+<!-- <!doctype html>
+<html>
+  <head>
+    <title>Nodes to Array</title>
+  </head>
+  <body>
+    <header id="1"></header>
+    <main id="2"></main>
+    <footer id="3"></footer>
+    <script>
+      function nodesToArr(parent) {
+        let output = [];
+        let children = parent.children;
+        children = [].slice.call(children);
+        if (children.length === 0) {
+          output.push([parent.tagName, []]);
+        } else {
+          children = children.map (node => {
+            return nodesToArr(node);
+          });
+          output.push([parent.tagName, children]);
+        }
+        return output;
+      }
+
+      console.log(nodesToArr(document.body));
+    </script>
+  </body>
+</html> -->
+
+<!-- <!doctype html>
+<html>
+  <head>
+    <title>Nodes to Array</title>
+  </head>
+  <body>
+    <header id="1"></header>
+    <main id="2">
+      <div></div>
+      <div></div>
+    </main>
+    <footer id="3"></footer>
+    <script>
+      function nodesToArr(parent) {
+        let output = [];
+        let children = parent.children;
+        children = [].slice.call(children);
+        if (children.length === 0) {
+          output.push([parent.tagName, []]);
+        } else {
+          children = children.map (node => {
+            return nodesToArr(node);
+          });
+          output.push([parent.tagName, children]);
+        }
+        return output;
+      }
+
+      console.log(String(nodesToArr(document.body)));
+    </script>
+  </body>
+</html> -->
+
+
+
+<!doctype html>
+<html>
+  <head>
+    <title>Nodes to Array</title>
+  </head>
+  <body>
+    <div id="1">
+      <div id="4"></div>
+      <div id="5">
+        <div id="6"></div>
+      </div>
+    </div>
+    <div id="2"></div>
+    <div id="3">
+      <div id="7"></div>
+      <div id="8"></div>
+      <div id="9"></div>
+    </div>
+    <script>
+      function nodesToArr(parent) {
+        let output = [];
+        let children = parent.children;
+        children = [].slice.call(children);
+        if (children.length === 0) {
+          output.push([parent.tagName, []]);
+        } else {
+          children = children.map (node => {
+            return nodesToArr(node);
+          });
+          output.push([parent.tagName, children]);
+        }
+        return output;
+      }
+
+      console.log(String(nodesToArr(document.body)));
+    </script>
+  </body>
+</html>

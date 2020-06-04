@@ -3,52 +3,11 @@
 
   <head>
     <title>Coloring</title>
-    <style>
-     body * {
-         position: absolute;
-         display: block;
-         height: 50px;
-         width: 50px;
-         font-size: 14px;
-         font-weight: normal;
-         text-decoration: none;
-         color: black;
-         box-shadow: inset 0px 0px 8px -1px rgba(0,0,0,0.30);
-     }
-
-     article {
-         margin-top: 10px;
-         margin-left: 10px;
-     }
-
-     .child1x1, .child1x2, .child1x6, article {
-         box-sizing: border-box;
-         padding: 5px 0 0 5px;
-     }
-
-     .child1x1 {
-         left: 50px;
-         top: 0px;
-     }
-
-     .child1x2 {
-         left: 50px;
-         top: 50px;
-     }
-
-     .child1x6 {
-         left: 50px;
-         top: 250px;
-     }
-
-     .generation-color {
-         background: #E0EAF1;
-     }
-    </style>
+    <link rel="stylesheet" href="05.coloring.css" />
   </head>
 
   <body>
-    <article id="1">1
+    <article id="1" >1
       <header id="2" class="child1x1">2
         <span id="3" class="child1x1">3
           <a href="#" id="4" class="child1x1">4</a>
@@ -90,5 +49,88 @@
         <p id="24" class="child1x1">24</p>
       </footer>
     </article>
+    <script>
+      function colorGeneration(targetGeneration) {
+        var generation = 0;
+        var parents = [document.body];
+        var elements;
+
+        while (generation < targetGeneration) {
+          generation += 1;
+          elements = parents.map(element => {
+            return Array.prototype.slice.call(element.children);
+          })
+          elements = elements.reduce((collection, children) => {
+            return collection.concat(children);
+          }, []);
+          parents = elements;
+        }
+
+        if (elements) {
+          elements.forEach(element => {
+          element.classList.add("generation-color");
+          })
+          return elements;
+        }
+      }
+
+      console.log(colorGeneration(6));
+    </script>
+ <!--    <script>
+      function colorGeneration(n) {
+  function setGenerationN(nodes, generation) {
+    for (var i = 0; i < nodes.length; i++) {
+      if (generation === n) {
+        return [...nodes].forEach(node => node.classList.add('generation-color'));
+      }
+      setGenerationN(nodes[i].children, generation + 1);
+    }
+  }
+
+  setGenerationN(document.body.children, 1);
+}
+  
+  colorGeneration(2);
+    </script> -->
+<!--     <script>
+      function colorGeneration(targetGeneration) {
+  var generation = 0;
+  var parents = [document.body];
+  var elements;
+
+  while (generation < targetGeneration) {
+    generation += 1;
+    elements = getAllChildrenOf(parents);
+    parents = elements;
+  }
+
+  if (elements) {
+    color(elements);
+  }
+}
+
+function color(elements) {
+  elements.forEach(function(element) {
+    element.classList.add("generation-color");
+  });
+}
+
+function getAllChildrenOf(parents) {
+  return parents.map(function(element) {
+    return Array.prototype.slice.call(element.children);
+  }).reduce(function(collection, children) {
+    return collection.concat(children);
+  }, []);
+}
+colorGeneration(3);
+</script> -->
   </body>
 </html>
+
+
+
+
+
+
+
+
