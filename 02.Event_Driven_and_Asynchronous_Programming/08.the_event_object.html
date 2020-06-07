@@ -37,5 +37,12 @@
     </div>
 
     <p>The last clicked element was: <span id="message">none</span>.</p>
+    <script>
+      document.addEventListener('click', event => {
+        let element = event.target;
+        let p = document.getElementById('message');
+        p.textContent = element.tagName;
+      });
+    </script>
   </body>
 </html>
