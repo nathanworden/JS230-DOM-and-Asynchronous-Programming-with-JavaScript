@@ -55,7 +55,20 @@
     <script>
       const canvas = document.getElementById('my-house');
       const houseCtx = canvas.getContext('2d');
+      // Set line width
       houseCtx.lineWidth = 10;
+
+      // Wall
+      houseCtx.strokeRect(75, 140, 150, 110);
+      //Door
+      houseCtx.fillRect(130, 190, 40, 60);
+      // Roof
+      houseCtx.beginPath();
+      houseCtx.moveTo(50, 140);
+      houseCtx.lineTo(150, 60);
+      houseCtx.lineTo(250, 140);
+      houseCtx.closePath();
+      houseCtx.stroke();
     </script>
   </body>
 </html>
