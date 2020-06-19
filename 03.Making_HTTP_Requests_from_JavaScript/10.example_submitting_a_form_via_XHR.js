@@ -121,7 +121,7 @@ title=Effective%20JavaScript&author=David%20Herman
 
 let form = document.getElementById('form');
 
-form.addEventListener('submit', event {
+form.addEventListener('submit', event => {
   // prevent the browser from submitting the form
   event.preventDefault();
 
@@ -142,10 +142,35 @@ form.addEventListener('submit', event {
 
 
 
+// Recall that the product edit form didn't work properly in the last assignment. Make changes to the JavaScript to submit the edit form using XMLHttpRequest. Once your code is working, you should see the message — "You must be logged in to do that." — when you try to submit the form. We'll deal with this in the next problem.
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  let store = document.getElementById('store');
+  
+  let request = new XMLHttpRequest();
+  request.open('GET', 'https://ls-230-web-store-demo.herokuapp.com/products');
 
+  request.addEventListener('load', event => store.innerHTML = request.response);
+  request.send();
+  
+  store.addEventListener('click', event =>  {
+    let target = event.target;
+    if (target.tagName !== 'A') {
+      return;
+    }
+    
+    event.preventDefault();
+    
+    let request = new XMLHttpRequest();
 
+    request.open('GET', `https://ls-230-web-store-demo.herokuapp.com${target.getAttribute('href')}`);
+    request.setRequestHeader('Authorization', 'token AUTH_TOKEN');
+
+    request.addEventListener('load', event => store.innerHTML = request.response);
+    request.send();
+  });
+});
 
 
 
