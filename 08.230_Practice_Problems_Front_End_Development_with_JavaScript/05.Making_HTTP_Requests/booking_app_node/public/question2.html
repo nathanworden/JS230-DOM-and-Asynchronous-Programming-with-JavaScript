@@ -1,0 +1,22 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <p>
+      <button id="makeRequest">Make a Request</button>
+    </p>
+    <script>
+      let request = new XMLHttpRequest()
+      
+      request.open('GET', 'http://localhost:3000/api/schedules');
+      request.send();
+
+      request.addEventListener('load', event =? {
+        var request = event.target;
+        console.log(request.responseText);
+        console.log(request.status);
+        console.log(request.statusText);
+      })
+    </script>
+  </body>
+</html>

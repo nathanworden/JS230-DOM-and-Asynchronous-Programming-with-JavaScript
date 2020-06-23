@@ -1,4 +1,24 @@
-const Autocomplete = {
+import debounce from './debounce.js';
+
+class Autocomplete = {
+  constructor (input, url) {
+    this.input = input;
+    this.url = url;
+
+    this.listUI = null;
+    this.overlay = null;
+    this.visible = false;
+    this.matches = [];
+    this.selectedIndex = null;
+    this.previousValue = null;
+    this.bestMatchIndex = null;
+
+    this.wrapInput();
+    this.createUI();
+    this.valueChanged = debounce(this.valueChanged.bind(this), 300);
+    this.bindEvents();
+  }
+
   wrapInput: function() {
     let wrapper = document.createElement('div');
     wrapper.classList.add('autocomplete-wrapper');
@@ -21,44 +41,14 @@ const Autocomplete = {
   },
 
   bindEvents: function() {
-    this.input.addEventListener('input', this.valueChanged.bind(this));
+    this.input.addEventListener('input', this.valueChanged);
     this.input.addEventListener('keydown', this.handleKeydown.bind(this));
-  },
-
-  handleKeydown: function(event) {
-    switch(event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        if (this.selecedIndex === null || this.selectedIndex === this.matches.length - 1) {
-          this.selectedIndex = 0;
-        } else {
-          this.selectedIndex += 1;
-        }
-        this.bestMatchIndex = null;
-        this.draw();
-        break;
-      case 'ArrowUp':
-      event.preventDefault();
-      if (this.selecedIndex === null || this.selectedIndex === 0) {
-        this.selectedIndex = this.matches.length - 1;
-      } else {
-        this.selectedIndex -= 1;
-      }
-      this.bestMatchIndex = null;
-      this.draw();
-      break;
-      case 'Tab':
-      if (this.bestMatchIndex !== null && this.matches.length !== 0) {
-        this.input.value = this.matches[this.bestMatchIndex].name;
-        event.preventDefault();
-      }
-      this.reset();
-      break;
-    }
+    this.listUI.addEventListener('mousedown', this.handleMousedown.bind(this));
   },
 
   valueChanged: function() {
-    const value = this.input.value;
+    let value = this.input.value;
+    this.previousValue = value;
 
     if (value.length > 0) {
       this.fetchMatches(value, matches => {
@@ -72,21 +62,9 @@ const Autocomplete = {
       this.reset();
     }
   },
-
-  fetchMatches: function(query, callback) {
-    let request = new XMLHttpRequest();
-
-    request.addEventListener('load', () => {
-      callback(request.response);
-    });
-
-    request.open('GET', `${this.url}${encodeURIComponent(query)}`);
-    request.responseType = 'json';
-    request.send();
-  },
-
+  
   draw: function() {
-    while(this.listUI.lastChild) {
+    while (this.listUI.lastChild) {
       this.listUI.removeChild(this.listUI.lastChild);
     }
 
@@ -96,7 +74,7 @@ const Autocomplete = {
     }
 
     if (this.bestMatchIndex !== null && this.matches.length !== 0) {
-      let selected = this.matches[this.bestMatchIndex];
+      var selected = this.matches[this.bestMatchIndex];
       this.overlay.textContent = this.generateOverlayContent(this.input.value, selected);
     } else {
       this.overlay.textContent = '';
@@ -116,36 +94,77 @@ const Autocomplete = {
     });
   },
 
+  generateOverlayContent: function(value, match) {
+    let end = match.name.substr(value.length);
+    return value + end;
+  }, 
+
+  fetchMatches: function(query, callback) {
+    let request = new XMLHttpRequest();
+
+    request.addEventListener('load', () => {
+      callback(request.response);
+    });
+
+    request.open('GET', `${this.url}${encodeURIComponent(query)}`);
+    request.responseType = 'json';
+    request.send();
+  },
+
   reset: function() {
     this.visible = false;
     this.matches = [];
     this.bestMatchIndex = null;
     this.selectedIndex = null;
+    this.previousValue = null;
 
     this.draw();
   },
 
-  generateOverlayContent: function(value, match) {
-    let end = match.name.substr(value.length);
-    return value + end;
+  handleKeydown: function(event) {
+    switch(event.key) {
+      case 'Tab':
+        if (this.bestMatchIndex !== null && this.matches.length !== 0) {
+          this.input.value = this.matches[this.bestMatchIndex].name;
+          event.preventDefault();
+        }
+        this.reset();
+        break;
+      case 'Enter':
+        this.reset();
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        if (this.selectedIndex === null || this.selectedIndex === this.matches.length - 1) {
+          this.selectedIndex = 0;
+        } else {
+          this.selectedIndex += 1;
+        }
+        this.bestMatchIndex = null;
+        this.draw();
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        if (this.selectedIndex === null || this.selectedIndex === 0) {
+          this.selectedIndex = this.matches.length - 1;
+        } else {
+          this.selectedIndex -= 1;
+        }
+        this.bestMatchIndex = null;
+        this.draw();
+        break;
+      case 'Escape': // escape
+        this.input.value = this.previousValue;
+        this.reset();
+        break;
+    }
   },
 
-  init: function() {
-    this.input = document.querySelector('input');
-    this.url = '/countries?matching=';
-
-    this.listUI = null;
-    this.overlay = null;
-
-    this.visible = false;
-    this.matches = [];
-
-    this.wrapInput();
-    this.createUI();
-    this.bindEvents();
-
+  handleMousedown: function(event) {
+    let element = event.target;
+    this.input.value = element.textContent;
     this.reset();
-  }
+  },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
