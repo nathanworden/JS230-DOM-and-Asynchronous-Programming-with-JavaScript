@@ -1,0 +1,1 @@
+// jQuery is a JavaScript libarary that provides a convenient and consistent API across most browsers and platforms.
