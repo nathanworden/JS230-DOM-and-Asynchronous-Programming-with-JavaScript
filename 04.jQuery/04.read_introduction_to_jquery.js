@@ -12,3 +12,11 @@ $(window).load(function() {
   // DOM loaded and ready, referenced image on img tags loaded and ready
 });
 
+$(function() {
+  // DOM is now loaded
+});
+
+var $content = jQuery('#content');
+var $sameContent = $('#content');
+
+console.log($content.jquery);

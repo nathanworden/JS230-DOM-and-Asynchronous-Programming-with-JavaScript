@@ -1,0 +1,26 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+      .categories {
+        font-size: 20px;
+      }
+    </style>
+</head>
+<ul id="navigation">
+  <li>
+    <a href="#">Categories</a>
+    <ul>
+      <li><a id="html" href="#">HTML</a></li>
+      <li><a id="css" href="#">CSS</a></li>
+      <li><a id="javascript" href="#">Javascript</a></li>
+    </ul>
+  </li>
+</ul>
+<script>
+  var $css = $('#css').closest('li');
+  $css.nextAll().hide();
+
+  $css.prevAll().hide();
+
+  $css.siblings().show();
+</script>
