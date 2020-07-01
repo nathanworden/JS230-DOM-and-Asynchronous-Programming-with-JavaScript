@@ -1,10 +1,11 @@
 $(function() {
-  $("body > header").prependTo("body");
-  $("main").first().prependTo("header");
+  let header = $("body > header")
 
+  header.prependTo("body");
+  $("main > h1").prependTo(header);
 
-  let $header = $('header');
-  let $body = $('body');
-  // $header.prependTo($body);
-
+  let first = $("section > figure").first()
+  let second = $("section > figure").last();
+  // console.log(first);
+  // console.log(second);
 });
