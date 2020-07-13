@@ -1,1 +1,119 @@
-<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <script id="handlebars-demo" type="text/x-handlebars-template">
+      <div>
+
+        This article is available on {{website.name}}.<br/>
+
+        {{#each names}}
+          I am a {{../occupation}}. My name is {{firstName}} {{lastName}}.<br/>
+        {{/each}}
+        <br/>
+
+        {{#each countries}}
+          {{@index}} : {{this}}<br>
+        {{/each}}
+
+        {{#each names}}
+          Name : {{firstName}} {{lastName}}</br>
+        {{/each}}
+        <br/>
+
+        {{#if countries}}
+          The countries are present.
+        {{else}}
+          The countries are not present.
+        {{/if}}
+        <br/>
+        <br/>
+        {{#each students}}
+          {{name}} has {{studyStatu1 passingYear}}.<br>
+        {{/each}}
+
+        <br/>
+        <br/>
+
+        {{#studyStatus2 students}}
+          {{name}} has {{passingYear}}
+        {{/studyStatus2}}
+
+        <br/>
+        <br/>
+
+        {{> partialTemplate website="sitepoint"}} <br>
+        {{> partialTemplate website="www.sitepoint.com"}}
+      </div>
+    </script>
+    <script>
+      // Retrieve the template data from the HTML (jQuery is used here).
+      $(function() {
+        Handlebars.registerHelper("studyStatu1", function(passingYear) {
+          if (passingYear < 2015) {
+            return "passed";
+          } else {
+            return "not passed";
+          }
+        });
+
+        Handlebars.registerHelper("studyStatus2", function(data, options) {
+          var len = data.length;
+          var returnData="";
+          for(var i=0; i<len; i+= 1) {
+            // change the value of the passingYear to
+            // passed/not passed based on the conditions.
+            data[i].passingYear=(data[i].passingYear < 2015) ? "passed" : "not passed";
+
+            // here options.fn(data[i]) temporairly changes the
+            // scope of the whole studyStatus helper
+            // block to data[i]. So {{name}}=data[i].name
+            // in the template.
+            returnData = returnData + options.fn(data[i]);
+          }
+
+          return returnData;
+        });
+
+        Handlebars.registerPartial(
+          'partialTemplate',
+          '{{language}} is {{adjective}}. You are reading this article on {{website}}.'
+        );
+
+
+
+        var template = $('#handlebars-demo').html();
+
+        // Compile the template data into a function
+        var templateScript = Handlebars.compile(template);
+
+        var context = {
+          "countries": ["Russia", "India", "USA"],
+          "names": [
+          {"firstName": "Ritesh", "lastName" : "Kumar"},
+          {"firstName": "John", "lastName": "Doe"},
+          ],
+          "occupation" : "developer",
+          "website" : {
+            "name" : "sitepoint"
+          },
+          "students": [
+          {"name": "John", "passingYear": "2013"},
+          {"name": "Doe", "passingYear" : "2016"}
+          ],
+          "language": "Handlebars",
+          "adjective": "awesome",
+          "name": "Ritesh Kumar",
+        }
+
+        // 'My name is Ritesh Kumar. I am a developer.'
+        var html = templateScript(context);
+
+        // Insert the HTML code into the page
+        $(document.body).append(html);
+      });
+    </script>
+  </body>
+</html>
