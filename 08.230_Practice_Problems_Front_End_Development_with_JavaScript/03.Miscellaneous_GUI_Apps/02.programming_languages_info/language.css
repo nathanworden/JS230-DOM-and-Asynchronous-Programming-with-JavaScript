@@ -1,0 +1,44 @@
+@import 'whitespace-reset.css';
+
+body {
+  background-color: #999900;
+  text-align: center;
+}
+
+body > h1 {
+  color: white;
+  font-size: 32px;
+}
+
+h1 {
+  color: black;
+  font-size: 24px;
+  margin: 20px;
+}
+
+div {
+  width: 600px;
+  height: 455px;
+  background-color: #fff;
+  margin: auto;
+  border-radius: 3px;
+  text-align: left;
+  padding: 20px;
+}
+
+a {
+  background-color: #999900;
+  text-decoration: none;
+  color: white;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+p {
+  padding: 10px;
+}
+
+
+.show_less {
+  display: none;
+}
