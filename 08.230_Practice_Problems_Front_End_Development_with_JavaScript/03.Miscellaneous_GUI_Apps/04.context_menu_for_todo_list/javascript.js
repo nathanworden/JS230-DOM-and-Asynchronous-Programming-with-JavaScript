@@ -3,7 +3,6 @@ $(function() {
     { id: 1, title: 'Homework' },
     { id: 2, title: 'Shopping' },
     { id: 3, title: 'Calling Mom' },
-    { id: 4, title: 'Coffee with John '}
   ];
 
   var App = {
@@ -12,6 +11,8 @@ $(function() {
     confirmTemplate: Handlebars.compile($('#confirm_template').html()),
     $todos: $('ul#todos'),
     $confirm: $('.confirm_prompt'),
+    $contextMenu: $('.context_menu'),
+    contextMenuTemplate: Handlebars.compile($('#context_menu_template').html()),
 
     renderTodos: function() {
       this.$todos.html(this.todosTemplate({ todos: this.todos }));
@@ -24,8 +25,8 @@ $(function() {
     },
 
     handleConfirmYes: function(e) {
-      var todoId = Number($(e.target).closest('.confirm_wrapper').attr('data-id'));
       e.preventDefault();
+      var todoId = Number($(e.target).closest('.confirm_wrapper').attr('data-id'));
       this.removeTodo(todoId);
     },
 
@@ -40,24 +41,45 @@ $(function() {
 
     showPrompt: function(todoId) {
       this.$confirm.html(this.confirmTemplate({id: todoId}));
-      this.$confirm.add('.overlay').show();
+      this.$confirm.add('.overlay').fadeIn(300);
       this.bindPromptEvents();
     },
 
     bindPromptEvents: function() {
-      this.$confirm.find('.confirm_no').one('click', this.hidePrompt.bind(this));
-      this.$confirm.find('.confirm_yes').one('click', this.handleConfirmYes.bind(this));
+      this.$confirm.one('click', '.confirm_no', this.hidePrompt.bind(this));
+      this.$confirm.one('click', '.confirm_yes', this.handleConfirmYes.bind(this));
     },
 
     hidePrompt: function() {
       this.$confirm.add('.overlay').hide();
-      this.$confirm.html('');
+    },
+
+    handleContextMenu: function(event) {
+      var left = event.clientX;
+      var top = event.clientY;
+      var id = +$(event.target).attr('data-id');
+
+      this.displayContextMenu(id, {left: left, top: top});
+      return false;
+    },
+
+    displayContextMenu: function(id, coords) {
+      this.hideContextMenu();
+      this.$contextMenu.html(this.contextMenuTemplate({id: id}));
+      this.$contextMenu.fadeIn(300);
+      this.$contextMenu.offset(coords)
+      this.$contextMenu.one('click', '.remove', this.handleDeleteClick.bind(this));
+    },
+
+    hideContextMenu: function() {
+      this.$contextMenu.hide();
     },
 
     init: function() {
       this.renderTodos();
-      this.$todos.on('click', 'li .remove', this.handleDeleteClick.bind(this));
+      this.$todos.on("contextmenu", 'li', this.handleContextMenu.bind(this));
       $('.overlay').on('click', this.hidePrompt.bind(this));
+      $('.context_menu_overlay').on('click', this.hideContextMenu.bind(this));
     }
   }
 
