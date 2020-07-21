@@ -1,0 +1,50 @@
+<DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Cars for Sale</title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+    <link rel="stylesheet" href="stylesheet.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Buy Used Cars</h1>
+      <div id="filters"></div>
+    </header>
+    <main>
+      <div id="cars"></div>
+    </main>
+
+    <script id="filters_template" type="text/x-handlebars-template">
+      <label for="make_select">Make</label>
+      <select name="make" id="make_select">
+      <option value="">All</option>
+    </script>
+
+    <script id="cars_template" type="text/x-handlebars-templates">
+      {{> test_template}}
+      {{#each cars}}
+        {{> car_tempate}}
+      {{/each}}
+    </script>
+
+    <script id="car_template" type="text/x-handlebars">
+      <div class="car">
+        <figure>
+          <img src="{{image}}">
+        </figure>
+        <h2>{{make}} {{model}}</h2>
+        <p class="year">Year: {{year}}</p>
+        <p class="price">Price: ${{price}}</p>
+        <a href="#">Buy</a>
+      </div>
+    </script>
+
+    <script id="test_template" type="text/x-handlebars-templates">
+      <p>{{thing}}</p>
+    </script>
+
+    <script src="app.js"></script>
+  </body>
+</html>
