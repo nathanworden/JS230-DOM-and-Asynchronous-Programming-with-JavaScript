@@ -36,5 +36,5 @@ $(function() {
     }
   }
 
-  App.init();
+  App.init(); 
 }); 
