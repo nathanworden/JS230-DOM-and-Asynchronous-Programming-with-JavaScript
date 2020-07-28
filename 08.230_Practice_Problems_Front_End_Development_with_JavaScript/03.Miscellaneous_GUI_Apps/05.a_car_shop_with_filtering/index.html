@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+    <link rel="stylesheet" href="whitespace-reset.css">
     <link rel="stylesheet" href="stylesheet.css" />
   </head>
   <body>
@@ -19,7 +21,37 @@
     <script id="filters_template" type="text/x-handlebars-template">
       <label for="make_select">Make</label>
       <select name="make" id="make_select">
-      <option value="">All</option>
+        <option value="">All</option>
+        {{#each makes}}
+          <option value="{{.}}">{{.}}</option>
+        {{/each}}
+      </select>
+
+      <label for="model_select">Model</label>
+      <select name="model" id="model_select">
+        <option value="">All</option>
+        {{#each models}}
+          <option value="{{.}}">{{.}}<option>
+        {{/each}}
+      </select>
+
+      <label for="price_select">Price</label>
+      <select name="price" id="price_select">
+        <option value="">Any</option>
+        {{#each prices}}
+          <option value="{{.}}">{{.}}</option>
+        {{/each}}
+      </select>
+
+      <label for="year_select">Year</label>
+      <select name="year" id="year_select">
+        <option value="">Any</option>
+        {{#each years}}
+          <option value="{{.}}">{{.}}</option>
+        {{/each}}
+      </select>
+
+      <button class="filter_btn">Filter</button>
     </script>
 
     <script id="cars_template" type="text/x-handlebars-templates">
@@ -39,6 +71,13 @@
         <p class="price">Price: ${{price}}</p>
         <a href="#">Buy</a>
       </div>
+    </script>
+
+    <script id="model_options_template" type="text/x-handlebars-template">
+      <option value="">All</option>
+      {{#each models}}
+        <option value="{{.}}">{{.}}</option>
+      {{/each}}
     </script>
 
     <script id="test_template" type="text/x-handlebars-templates">

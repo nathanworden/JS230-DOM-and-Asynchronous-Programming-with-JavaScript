@@ -1,5 +1,6 @@
 $(function() {
   Handlebars.registerPartial('car_tempate', $('#car_template').html());
+  Handlebars.registerPartial('model_options_template', $('#model_options_template').html());
   Handlebars.registerPartial('test_template', $('#test_template').html());
 
   otherContext = {
@@ -18,21 +19,73 @@ $(function() {
   
   var App = {
     carsTemplate: Handlebars.compile($('#cars_template').html()),
-    filtersTemplate: Handlebars.compile($('#filters_template').html());
+    filtersTemplate: Handlebars.compile($('#filters_template').html()),
     allCars: cars,
-    $filters: $('#filters'),
     $cars: $('#cars'),
+    $filters: $('#filters'),
     filteredCars: cars,
+    modelOptionsTemplate: Handlebars.compile($('#model_options_template').html()),
     otherContext: otherContext,
 
     renderCars: function() {
       this.$cars.html(this.carsTemplate({cars: this.filteredCars, thing: this.otherContext["thing"]}));
     },
     renderFilterMenu: function() {
-      this.$filters.html(h)
+      this.$filters.html(this.filtersTemplate(this.generateFilters()));
     },
+
+    handleFilterClick: function() {
+      var make = $('#make_select').val();
+      var model = $('#model_select').val();
+      var price = Number($('#price_select').val());
+      var year = Number($('#year_select').val());
+
+      var filters = {};
+
+      if (make) filters.make = make;
+      if (model) filters.model = model;
+      if (price) filters.price = price;
+      if (year) filters.year = year;
+
+      this.filterCars(filters);
+    },
+
+    filterCars: function(filters) {
+      this.filteredCars = _(this.allCars).where(filters);
+      this.renderCars();
+    },
+
+    generateFilters: function() {
+      var makes = _.uniq(_(this.allCars).pluck('make'));
+      var models = _.uniq(_(this.allCars).pluck('model'));
+      var prices = _.uniq(_(this.allCars).pluck('price'));
+      var years = _.uniq(_(this.allCars).pluck('year'));
+
+      return { makes: makes, models: models, prices: prices, years: years };
+    },
+
+    renderModelsForMake: function(models) {
+      $('#model_select').html(this.modelOptionsTemplate({models: models}));
+    },
+
+    handleMakeSelect: function(e) {
+      var make = $(e.target).val();
+      var modelsForMake;
+
+      if (make) {
+        modelsForMake = _.uniq(_(_.where(this.allCars, {make: make})).pluck('model'));
+      } else {
+        modeslForMake = _.uniq(_(this.allCars).pluck('model'));
+      }
+
+      this.renderModelsForMake(modelsForMake);
+    },
+
     init: function() {
       this.renderCars();
+      this.renderFilterMenu();
+      $('#filters').on('click', '.filter_btn', this.handleFilterClick.bind(this));
+      $('#make_select').on('change', this.handleMakeSelect.bind(this));
     }
   }
 
