@@ -1,0 +1,1 @@
+// When you're working with the DOM in JavaScript, you'll be working with a variety of different kinds of objects. Its importnatn to know what type of object you're working on so you know what methods and propteries it has
