@@ -1,0 +1,1 @@
+// An event is an object that represents some occurrence; it contains informatiuon about what happeend and where it happened.

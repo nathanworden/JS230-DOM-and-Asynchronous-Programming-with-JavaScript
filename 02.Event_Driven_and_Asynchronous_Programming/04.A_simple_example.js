@@ -1,0 +1,1 @@
+After the dom is loaded the browser waits for the event to fire.

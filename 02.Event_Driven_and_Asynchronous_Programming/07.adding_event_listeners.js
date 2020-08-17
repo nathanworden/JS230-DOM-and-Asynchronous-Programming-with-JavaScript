@@ -1,0 +1,2 @@
+Identify the event you need to handle. User AuthenticatorAssertionResponse, the page lifecycle, and more can fire events.
+2. Identify the element that will receive the event. Depending on the event, the object could be a button, an input foe
