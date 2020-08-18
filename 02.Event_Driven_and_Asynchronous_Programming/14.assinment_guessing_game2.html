@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <link rel=stylesheet href="./14.assinment_guessing_game2.css">
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                let answer = Math.floor(Math.random() * 100) + 1;
+                let input = document.querySelector('#guess');
+                let form = document.querySelector('form');
+
+                form.addEventListener("submit", event => {
+                    event.preventDefault();
+                    let guess = parseInt(input.value, 10);
+                    let message;
+                    if (guess > answer) {
+                        message = `My number is lower than ${String(guess)}`
+                    } else if (guess < answer ) {
+                        message = `My number is higher than ${String(guess)}`;
+                    } else if (guess === answer) {
+                        message = "You guessed correctly!";
+                    }
+
+                    let paragraph = document.querySelector('p');
+                    paragraph.textContent = message;
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <main>
+            <h1>Number Guessing Game</h1>
+            <p>Guess a number from 1 to 100</p>
+            <form>
+              <fieldset>
+                <input type="text" id="guess" maxlength="3">
+                <input type="submit" value="Guess" />
+              </fieldset>  
+            </form>
+            <a href="#">New game</a>
+        </main>
+    </body>
+</html>

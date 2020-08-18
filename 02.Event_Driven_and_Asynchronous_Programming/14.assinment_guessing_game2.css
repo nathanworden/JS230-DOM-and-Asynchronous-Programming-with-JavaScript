@@ -1,0 +1,27 @@
+body {
+    background: #5bccb3;
+}
+
+main {
+    margin: 0 auto;
+    background-color: #fff;
+    max-width: 450px;
+    padding: 20px;
+}
+
+h1 {
+    color: #CC183E;
+  }
+
+input[type="submit"] {
+    display: block;
+    padding: 15px 0;
+    color: #fff;
+    width: 100%;
+    border: 1px solid #91112C;
+    background: linear-gradient(to bottom, #CC183E 0%, #780E24 100%);
+}
+
+a {
+    color: #cc183e;
+  }

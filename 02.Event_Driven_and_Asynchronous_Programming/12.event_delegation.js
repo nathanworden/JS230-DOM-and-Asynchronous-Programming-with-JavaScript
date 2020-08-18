@@ -1,0 +1,2 @@
+// When To Use Event Delegation
+// The best approach is to start by binding event handlers directly to elements when a project is new and small. As the code grows in size and complexity, delegation may make sense to reduce the number of event handlers required.
