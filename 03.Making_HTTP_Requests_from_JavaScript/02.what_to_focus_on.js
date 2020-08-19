@@ -20,3 +20,5 @@
 // Don't try to memorize the details of the web APIs we discuss. Instead, try to internalize the conventions you see and learn to find the specifics in the documentation.
 
 // On some projects, the documentation will be in your teammates' minds. In such cases, you must be able to talk to them about the URL, parameters, etc. needed for a piece of functionality.
+
+// On some projects, the documentation will be in your teammates' minds.
