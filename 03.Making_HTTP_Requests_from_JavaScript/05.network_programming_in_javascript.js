@@ -18,3 +18,8 @@
 
 // To summarize: when requesting a resource using JavaScript, the developer must write code that initates the request and handles the response.
 
+
+
+
+// AJAX is Asynchronous JavaScript and XML
+// WHen you hear someone mention "an AJAX request" they are refering to an HTTP request from a web browser that does not perform a full page load.

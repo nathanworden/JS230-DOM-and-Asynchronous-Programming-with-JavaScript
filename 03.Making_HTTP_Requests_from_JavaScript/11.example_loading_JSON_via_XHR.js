@@ -1,11 +1,10 @@
-let request = new XMLHttpRequest();
-request.open('GET', 'http://api.github.com/repos/rails/rails');
+let request = new HTMLHttpRequest();
+request.open('GET', 'https://api.github.com/repos/rails/rails');
+request.responseType = 'json';
 
 request.addEventListener('load', event => {
-  let data = JSON.parse(request.response);
+  let data = request.response;
 
-  // do something with data
-  console.log(data);
 });
 
-request.send()
+request.send();

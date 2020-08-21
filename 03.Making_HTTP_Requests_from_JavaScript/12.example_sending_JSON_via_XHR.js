@@ -50,7 +50,7 @@ request.send(json);
 
 // ///////
 // POST /books HTTP/1.1
-// Host: ss-230-book-catalog.herokuapp.com
+// Host: ls-230-book-catalog.herokuapp.com
 // Content-Type: application/json
 // Accept: * / *
 
@@ -61,19 +61,29 @@ request.send(json);
 
 ///////////
 
-let json = JSON.stringify(productData);
-let request = new XMLHttpRequest();
+function createProduct(productData) {
+    let json = JSON.stringify(productData);
+    let request = new XMLHttpRequest();
+    request.open('POST', "https://ls-230-web-store-demo.herokuapp.com/v1/products");
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('Authorization', 'token AUTH_TOKEN');
 
-request.open('POST', 'https://ls-230-web-store-demo.herokuapp.com/v1/products');
-request.setRequestHeader('Content-Type', 'application/json');
-request.setRequestHeader('Authorization', 'token AUTH_TOKEN');
+    request.addEventListener('load', () => {
+        console.log(`This product was added: ${request.responseText}`);
+    });
 
-let data = {'name': 'nerm', 'sku': 'rf4', 'price': 100}
-let json = JSON.stringify(data);
+    request.send(json);
+}
 
-request.send(json);
+createProduct({
+    name 'HB pencil',
+    sku: 'hbp100',
+    price: 50,
+});
 
 
 
 
+
+let json = {'name': 'dog', 'sku': '123', 'price': '299'}
 
