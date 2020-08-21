@@ -12,3 +12,23 @@
 
 //  Origin: http://localhost:8080
 
+
+
+/* 
+
+The scheme, hostname, and port of a web page's URL define its origin.
+
+A cross-origin request occurs when the page tries to access a resource from a different origin.
+
+You can't make cross-domain requests with an XMLHttpRequest object.
+
+CORS
+
+Cross Origin Resource Sharing
+
+CORS defines how the browser and server must communicate when accssing resources across origins.
+
+Applications use custom HTTP request and response headers to imlement this mechanism.
+
+According to the specification, every XMLHttpRequest sent by the browser must have an Origin header that contains the origin of the requesting page.
+*/
