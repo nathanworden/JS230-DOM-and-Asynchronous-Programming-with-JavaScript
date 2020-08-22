@@ -38,16 +38,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-
-
-
-////
-
-let arr = [
-  {id: 1, staff_id: 1, student_email: null, date: "07-02-18", time: "06:20"},
-  {id: 2, staff_id: 1, student_email: null, date: "07-02-18", time: "06:20"},
-  {id: 3, staff_id: 2, student_email: null, date: "07-02-18", time: "06:20"},
-  {id: 4, staff_id: 3, student_email: null, date: "07-02-18", time: "06:20"},
-
-]

@@ -23,7 +23,7 @@ function generateSequence() {
 }
 
 /**
- * @api {get} /staff_members Retrieves all available staff memebers  
+ * @api {get} /staff_members Retrieves all available staff members  
  * @apiGroup Staff
  * 
  * @apiSuccess {Object[]} staff_members            List of staff.
