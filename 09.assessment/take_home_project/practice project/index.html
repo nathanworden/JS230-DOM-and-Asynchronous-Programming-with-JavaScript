@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>Contact Manager</title>
+        <link href="public/style.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header class="bs-header">
+            <h1>Contact Manager </h1>   
+            <p>Using Backbone.js, Localstorage, RequireJS, Handlebar and Bootstrap</p>
+        </header>
+        <main class="container">
+            <article>
+                <section class="add-and-search">
+                    <div class="btn btn-style"> 
+                        <a href="#contacts/new">Add Contact</a>
+                    </div>
+                    <div class="input-box">
+                        <input class="search-input" placeholder="Search">
+                    </div>
+                </section>
+                <section class="contacts">
+                    <h2>There are no contacts.</h2>
+                    <div class="btn btn-style"> 
+                        <a href="#contacts/new">Add Contact</a>
+                    </div>
+                </section>
+            </article>
+            <section id="create-section">
+                <hr>
+                <form action="#">
+                    <h2>Create Contact</h2>
+                    <fieldset class="create-contact">
+                        <label>Full Name:</label>
+                        <input type="text">
+                        <label>Email Address:</label>
+                        <input type="text">
+                        <label>Telephone Number:
+                        </label>
+                        <input type="text">
+                    </fieldset>
+                    <div class="btn-section">
+                        <div class="btn-style col-offset low-buttons">Submit</div>
+                        <div class="btn btn-style low-buttons">Cancel</div>
+                    </div>
+
+                </form>
+            </section>
+        </main>
+        <hr>
+        <footer>
+        </footer>
+    </body>
+
+    <script>
+        $(function() {
+            $(".btn").on("click", event => {
+                $("#create-section").slideToggle(600);
+                $("article").slideToggle(600);
+            });
+        });
+    </script>
+</html>
