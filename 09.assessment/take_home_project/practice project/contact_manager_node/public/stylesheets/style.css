@@ -49,6 +49,21 @@ p {
     border-bottom: 1px solid rgba(46, 49, 49, .3);
 }
 
+.id {
+    display: none;
+}
+
+.delete-btn {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 14px;
+    color: #6f5499;
+    opacity: .9;
+    font-weight: 400;
+    vertical-align: bottom;
+}
+
 .name {
     font-size: 24px;
     font-weight: 500;
@@ -103,6 +118,10 @@ ul li {
 }
 
 .ct-btn:hover p {
+    color: white;
+}
+
+.ct-btn:hover .delete-btn {
     color: white;
 }
 

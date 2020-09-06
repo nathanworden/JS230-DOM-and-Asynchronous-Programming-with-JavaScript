@@ -3,32 +3,53 @@ $(function() {
         contactTemplate: Handlebars.compile($('#contact_template').html()),
         $contacts: $('.contacts'),
         contactIdNumber: 1,
-        theContext: {
-            "contacts" : [
-                { full_name: "Bebe McGee", phone_number: '541-231-1453', email: 'worden.nathan@gmail.com'},
-            ]
-        },
+        theContext: {},
+        aTest: {'theKey': 'theValue'},
         handleCancel: function() {
             $('#cancel').on('click', event => {
                 $("#create-section").slideToggle(600);
                 $("article").slideToggle(600);
             });
         },
-        buildTheContext: function() {
+        buildTheContext: function(fromWhere) {
             console.log('buildTheContext ran');
+            let that = this;
+            let output;
             let request = new XMLHttpRequest();
             request.open('GET', 'http://localhost:3000/api/contacts');
+            request.responseType = 'json';
             request.addEventListener('load', event => {
-                console.log(`This is event.target: ${event.target}`);
-                this.theContext = "Now I'm a stupid string";
-                console.log(`theContext: ${this.theContext}`)
+                that.theContext["contacts"]  = request.response;
+                console.log(this.theContext);
+                this.$contacts.html(this.contactTemplate(this.theContext));
+                if (fromWhere === 'fromAdd') {
+                    $('#create-section').slideToggle(600);
+                    $("article").slideToggle(600);
+                }
+                this.addDeleteEventListener();
             });
             request.send();
         },
-        renderContacts: function() {
-            this.buildTheContext();
-            this.$contacts.html(this.contactTemplate(this.theContext));
-            console.log('rederContacts ran')
+        addDeleteEventListener: function() {
+            let deleteBtn = $('.select-delete-btn');
+            deleteBtn.on('click', event => {
+                let classAttribute = event.currentTarget.getAttribute('class');
+                let id = event.currentTarget.parentNode.parentNode.firstElementChild.innerHTML;
+                console.log(id);
+
+                let request = new XMLHttpRequest();
+                request.open('DELETE', `http://localhost:3000/api/contacts/${id}`)
+                request.addEventListener('load', event => {
+                    if (request.status === 204) {
+                        console.log(request.status);
+                        this.buildTheContext('fromDelete');
+                    } else {
+                        console.log(request.status);
+                    }
+                });
+
+                request.send();
+            });
         },
         handleAddContact: function() {
             let form = document.getElementById('form');
@@ -52,9 +73,7 @@ $(function() {
                 keysAndValues.push(`id=${this.contactIdNumber}`)
                 this.contactIdNumber += 1;
 
-                console.log(event.target);
                 let data = keysAndValues.join('&');
-                console.log(data);
 
                 let request = new XMLHttpRequest();
                 request.open('POST', 'http://localhost:3000/api/contacts')
@@ -62,10 +81,7 @@ $(function() {
                 request.addEventListener('load', () => {
                     if (request.status === 201) {
                         console.log(`Something worked. Here is the responseText: ${request.responseText}`);
-                        this.renderContacts();
-                        $('#create-section').slideToggle(600);
-                        $("article").slideToggle(600);
-                        
+                        this.buildTheContext('fromAdd');
                     } else {
                         console.log("didn't work")
                     }
@@ -80,6 +96,7 @@ $(function() {
                 $("#create-section").slideToggle(600);
                 $("article").slideToggle(600);
             });
+            // this.buildTheContext();
             this.handleAddContact();
             this.handleCancel();
         }
