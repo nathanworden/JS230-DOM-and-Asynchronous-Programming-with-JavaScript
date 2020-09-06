@@ -4,6 +4,7 @@ $(function() {
         $contacts: $('.contacts'),
         contactIdNumber: 1,
         theContext: {},
+        firstTimeMakingContactBtnClickable: true,
         aTest: {'theKey': 'theValue'},
         handleCancel: function() {
             $('#cancel').on('click', event => {
@@ -11,8 +12,23 @@ $(function() {
                 $("article").slideToggle(600);
             });
         },
+        makeAddContactClickable: function() {
+            let theAddContactButtons = $(".add-contact-btn")
+        
+            if (this.firstTimeMakingContactBtnClickable) {
+                theAddContactButtons.on("click", event => {
+                    $("#create-section").slideToggle(600);
+                    $("article").slideToggle(600);
+                    this.firstTimeMakingContactBtnClickable = false;
+                });
+            } else {
+                $(theAddContactButtons[1]).on("click", event => {
+                    $("#create-section").slideToggle(600);
+                    $("article").slideToggle(600);
+                });
+            }
+        },
         buildTheContext: function(fromWhere) {
-            console.log('buildTheContext ran');
             let that = this;
             let output;
             let request = new XMLHttpRequest();
@@ -20,29 +36,66 @@ $(function() {
             request.responseType = 'json';
             request.addEventListener('load', event => {
                 that.theContext["contacts"]  = request.response;
-                console.log(this.theContext);
                 this.$contacts.html(this.contactTemplate(this.theContext));
                 if (fromWhere === 'fromAdd') {
                     $('#create-section').slideToggle(600);
                     $("article").slideToggle(600);
                 }
                 this.addDeleteEventListener();
+                this.addEditEventListener();
+
+                if (request.response.length < 1) {
+                    let h2 = document.createElement('h2');
+                    h2.appendChild(document.createTextNode("There are no contacts."));
+                    let div = document.createElement('div');
+                    div.classList.add("add-contact-btn", "btn-style");
+                    let a = document.createElement('a');
+                    a.setAttribute('href','#contacts/new');
+                    a.appendChild(document.createTextNode('Add Contact'));
+                    div.appendChild(a);
+
+                    $('.contacts').html(h2);
+                    $('.contacts').append(div);
+
+                    this.makeAddContactClickable();
+                }
             });
             request.send();
         },
         addDeleteEventListener: function() {
             let deleteBtn = $('.select-delete-btn');
             deleteBtn.on('click', event => {
-                let classAttribute = event.currentTarget.getAttribute('class');
                 let id = event.currentTarget.parentNode.parentNode.firstElementChild.innerHTML;
-                console.log(id);
-
                 let request = new XMLHttpRequest();
-                request.open('DELETE', `http://localhost:3000/api/contacts/${id}`)
+                request.open('DELETE', `http://localhost:3000/api/contacts/${id}`);
                 request.addEventListener('load', event => {
                     if (request.status === 204) {
-                        console.log(request.status);
                         this.buildTheContext('fromDelete');
+                    } else {
+                        console.log(request.status);
+                    }
+                });
+
+                request.send();
+            });
+        },
+        addEditEventListener: function() {
+            let editBtn = $('.edit-btn');
+            editBtn.on('click', event => {
+                let id = event.currentTarget.parentNode.parentNode.firstElementChild.innerHTML;
+                let request = new XMLHttpRequest();
+                request.open('GET', `http://localhost:3000/api/contacts/${id}`);
+                request.addEventListener('load', event => {
+                    if (request.status === 200) {
+                        let json = JSON.parse(request.responseText);
+
+                        form.elements.full_name.value = json["full_name"];
+                        form.elements.phone_number.value = json["phone_number"];
+                        form.elements.email.value = json["email"];
+                        form.elements.tags.value = json["tags"];
+
+                        $("#create-section").slideToggle(600);
+                        $("article").slideToggle(600);
                     } else {
                         console.log(request.status);
                     }
@@ -67,6 +120,7 @@ $(function() {
                         key = encodeURIComponent(element.name);
                         value = encodeURIComponent(element.value);
                         keysAndValues.push(`${key}=${value}`);
+                        element.value = '';
                     }
                 }
 
@@ -80,10 +134,9 @@ $(function() {
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 request.addEventListener('load', () => {
                     if (request.status === 201) {
-                        console.log(`Something worked. Here is the responseText: ${request.responseText}`);
                         this.buildTheContext('fromAdd');
                     } else {
-                        console.log("didn't work")
+                        console.log("handleAddContact didn't work")
                     }
                 });
 
@@ -92,11 +145,7 @@ $(function() {
         },
 
         init: function() {
-            $(".btn").on("click", event => {
-                $("#create-section").slideToggle(600);
-                $("article").slideToggle(600);
-            });
-            // this.buildTheContext();
+            this.buildTheContext();
             this.handleAddContact();
             this.handleCancel();
         }
