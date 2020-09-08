@@ -88,14 +88,39 @@ $(function() {
                 request.addEventListener('load', event => {
                     if (request.status === 200) {
                         let json = JSON.parse(request.responseText);
+                        let form = document.getElementById('form');
+                        let freshEditForm = form.cloneNode(true);
+                        freshEditForm.setAttribute('id', 'edit-form');
+                        console.log(freshEditForm.firstElementChild.innerHTML = 'Edit Contact');
 
-                        form.elements.full_name.value = json["full_name"];
-                        form.elements.phone_number.value = json["phone_number"];
-                        form.elements.email.value = json["email"];
-                        form.elements.tags.value = json["tags"];
+                        freshEditForm.elements.full_name.value = json["full_name"];
+                        freshEditForm.elements.phone_number.value = json["phone_number"];
+                        freshEditForm.elements.email.value = json["email"];
+                        freshEditForm.elements.tags.value = json["tags"];
 
-                        $("#create-section").slideToggle(600);
+                        $('.container').append(freshEditForm);
+
+                        $(freshEditForm).slideToggle(600);
                         $("article").slideToggle(600);
+
+                        $('#edit-form #cancel').on('click', event => {
+                            $("article").slideToggle(600);
+                            $(freshEditForm).remove();
+                        });
+
+
+                        $("#edit-form").on('submit', event => {
+                            event.preventDefault();
+   
+                            let editForm = event.currentTarget
+
+                            for (let i = 0; i < editForm.elements.length; i += 1) {
+                                let element = editForm.elements[i]
+                                console.log(element.name);
+                                console.log(element.value);
+                                // START HERE START HERE START HERE START HERE START HERE START HERE
+                            }
+                        });
                     } else {
                         console.log(request.status);
                     }

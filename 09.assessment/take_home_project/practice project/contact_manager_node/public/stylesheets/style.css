@@ -152,6 +152,10 @@ ul li {
     display: none;
 }
 
+#edit-form {
+    display: none;
+}
+
 .contacts {
     margin: 30px;
     background-color: #fff;
