@@ -17,6 +17,7 @@ $(function() {
         
             if (this.firstTimeMakingContactBtnClickable) {
                 theAddContactButtons.on("click", event => {
+                    console.log('click!');
                     $("#create-section").slideToggle(600);
                     $("article").slideToggle(600);
                     this.firstTimeMakingContactBtnClickable = false;
@@ -28,18 +29,31 @@ $(function() {
                 });
             }
         },
-        buildTheContext: function(fromWhere) {
+        buildTheContext: function(fromWhere, searchText) {
             let that = this;
             let output;
             let request = new XMLHttpRequest();
             request.open('GET', 'http://localhost:3000/api/contacts');
             request.responseType = 'json';
             request.addEventListener('load', event => {
-                that.theContext["contacts"]  = request.response;
+                let filtered;
+                if (fromWhere === 'fromSearch') {
+                    filtered = request.response.filter(contact => {
+                        return contact.full_name.includes(searchText);
+                    });
+                    console.log(filtered);
+                    console.log(searchText);
+                }
+
+                fromWhere === 'fromSearch' ? that.theContext["contacts"] = filtered : that.theContext["contacts"]  = request.response;
                 this.$contacts.html(this.contactTemplate(this.theContext));
                 if (fromWhere === 'fromAdd') {
                     $('#create-section').slideToggle(600);
                     $("article").slideToggle(600);
+                } else if (fromWhere === 'fromEdit') {
+                    $('#edit-form').slideToggle(600);
+                    $("article").slideToggle(600);
+                    $('#edit-form').remove();
                 }
                 this.addDeleteEventListener();
                 this.addEditEventListener();
@@ -97,6 +111,7 @@ $(function() {
                         freshEditForm.elements.phone_number.value = json["phone_number"];
                         freshEditForm.elements.email.value = json["email"];
                         freshEditForm.elements.tags.value = json["tags"];
+                        let id = json["id"];
 
                         $('.container').append(freshEditForm);
 
@@ -113,13 +128,39 @@ $(function() {
                             event.preventDefault();
    
                             let editForm = event.currentTarget
+                            let keysAndValues = [];
+                            let data;
+                            
+                            keysAndValues.push(`id=${id}`);
 
                             for (let i = 0; i < editForm.elements.length; i += 1) {
                                 let element = editForm.elements[i]
-                                console.log(element.name);
-                                console.log(element.value);
-                                // START HERE START HERE START HERE START HERE START HERE START HERE
+                                let key;
+                                let value;
+
+                                if (element.type === 'text') {
+                                    key = encodeURIComponent(element.name);
+                                    value = encodeURIComponent(element.value);
+                                    keysAndValues.push(`${key}=${value}`)
+                                }
                             }
+
+                            data = keysAndValues.join('&');
+                            console.log(data);
+
+                            let request = new XMLHttpRequest();
+                            request.open('PUT', `http://localhost:3000/api/contacts/${id}`)
+                            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            request.addEventListener('load', () => {
+                                if (request.status === 201) {
+                                    this.buildTheContext('fromEdit');
+
+                                } else {
+                                    console.log("handleAddContact didn't work")
+                                }
+                            });
+                        
+                            request.send(data);
                         });
                     } else {
                         console.log(request.status);
@@ -155,7 +196,7 @@ $(function() {
                 let data = keysAndValues.join('&');
 
                 let request = new XMLHttpRequest();
-                request.open('POST', 'http://localhost:3000/api/contacts')
+                request.open('POST', 'http://localhost:3000/api/contacts');
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 request.addEventListener('load', () => {
                     if (request.status === 201) {
@@ -168,11 +209,21 @@ $(function() {
                 request.send(data);
             });
         },
+        handleKeyStroke: function() {
+            let searchBox = document.querySelector("#search-box");
+            searchBox.addEventListener("keyup", event => {
+                let searchText = $(searchBox).val();
+                this.buildTheContext("fromSearch", searchText);
+                
+            });
+            console.log(`searchBox: ${searchBox}`);
+        },
 
         init: function() {
             this.buildTheContext();
             this.handleAddContact();
             this.handleCancel();
+            this.handleKeyStroke();
         }
     }
 

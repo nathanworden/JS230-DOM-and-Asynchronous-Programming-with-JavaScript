@@ -23,8 +23,11 @@
                     <a href="#contacts/new">Add Contact</a>
                 </div>
                 <div class="input-box">
-                    <input class="search-input" placeholder="Search">
+                    <input id="search-box" class="search-input" placeholder="Search">
                 </div>
+            </section>
+            <section id="tags">
+                <h3>Currently, there are no tags</h3>
             </section>
             <section class="contacts">
                 <h2>There are no contacts.</h2>
@@ -41,6 +44,7 @@
                         <li class="name">{{full_name}}</li>
                         <li>{{phone_number}}</li>
                         <li>{{email}}</li>
+                        <li class="contact-tags">{{tags}}</li>
                         <li class="ct-button-holder">
                             <div class="ct-btn edit-btn">
                                 <!-- <img src="/assets/edit.png"> -->
