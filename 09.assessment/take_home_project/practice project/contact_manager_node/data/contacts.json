@@ -1,23 +1,9 @@
 [
   {
-    "full_name": "Dan Worden",
-    "phone_number": "541-231-1453",
-    "email": "dan@gmail.com",
-    "tags": "brother, dogo, family",
+    "full_name": "Nathan",
+    "phone_number": "5412311453",
+    "email": "worden.nathan@gmail.com",
+    "tags": "work",
     "id": 1
-  },
-  {
-    "full_name": "Nathan Worden",
-    "phone_number": "541-231-15453",
-    "email": "nathan@gmail.com",
-    "tags": "me, family, also me",
-    "id": 2
-  },
-  {
-    "full_name": "Blorbo",
-    "phone_number": "5555555555",
-    "email": "blorb@gmail.com",
-    "tags": "blorb, hes a blorb, lots of tags here, and they are very long",
-    "id": 4
   }
 ]
