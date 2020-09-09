@@ -51,11 +51,8 @@ $(function() {
                         return contact.full_name.toLowerCase().includes(searchText.toLowerCase());
                     });
                 } else if (fromWhere === 'fromTags') {
-                    console.log(searchText)
-                    $(event.target).css('background-color', 'pink');
                     filtered = request.response.filter(contact => {
                         let result = contact.tags.includes(searchText);
-                        console.log(result);
                         return result;
                     });
                 }
@@ -195,9 +192,10 @@ $(function() {
             });
         },
         addTagsEventListener: function() {
-            // console.log('addTagsEvent Listener ran');
             $(".contact-tags").on('click', event => {
-                this.buildTheContext('fromTags', event.target.innerHTML)
+                this.buildTheContext('fromTags', event.target.innerHTML);
+                console.log(event.currentTarget);
+                $(event.currentTarget).css('background', 'pink');
             });
         },
         handleAddContact: function() {
