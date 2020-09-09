@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Nathan Contact Manager</title>
     <link href="stylesheets/style.css" rel="stylesheet" />
     <script src="/javascripts/jquery.js"></script>
     <script src="/javascripts/handlebars.js"></script>
@@ -38,13 +38,17 @@
         </article>
         <script id="contact_template" type="text/x-handlebars-template">
             <div>
-                {{#each contacts}}
+                {{#contacts}}
                     <ul class="contact-card">
                         <li class="id">{{id}}</li>
                         <li class="name">{{full_name}}</li>
                         <li>{{phone_number}}</li>
                         <li>{{email}}</li>
-                        <li class="contact-tags">{{tags}}</li>
+                        <li class='scroll-menu'>
+                            {{#each tags}}
+                                <span class="contact-tags">{{this}}</span>
+                            {{/each}}
+                        </li>
                         <li class="ct-button-holder">
                             <div class="ct-btn edit-btn">
                                 <!-- <img src="/assets/edit.png"> -->
@@ -58,8 +62,19 @@
                             </div>
                         </li>
                     </ul>
-                {{/each}}
+                {{/contacts}}
             </div>
+        </script>
+        <script id="tags-template" type="text/x-handlebars-template">
+            {{#contacts}}
+            <ul class="contact-cards">
+                <li class="scroll-menu">
+                    {{#each tags}}
+                        <span class='contact-tags'>{{this}}</span>
+                    {{/each}}
+                </li>
+            </ul>
+            {{/contacts}}
         </script>
         <section id="create-section">
             <form action="#" id="form">

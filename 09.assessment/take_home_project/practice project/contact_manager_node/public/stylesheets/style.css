@@ -4,6 +4,10 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+article {
+    display: block;
+}
+
 .bs-header {
     position: relative;
     color: #cdbfe3;
@@ -44,7 +48,7 @@ p {
     display: inline-block;
     align-items: left;
     width: 200px;
-    margin: 0 0 20px 20px;
+    margin: 0 0 20px 5px;
     color: black;
     border-bottom: 1px solid rgba(46, 49, 49, .3);
 }
@@ -70,22 +74,37 @@ p {
     margin-bottom: 20px;
 }
 
+.scroll-menu {
+    overflow: auto;
+    white-space: nowrap;
+}
+
 .contact-tags {
     border: 1px solid #6f5499;
     border-radius: 6px;
-     
+    display: inline-block;
+    padding: 2px 7px;
+    /* margin: 5px; */
+    color: #6f5499;
+    font-size: 10px;
+}
+
+.contact-tags:hover {
+    background-color: #6f5499;
+    color: white;
 }
 
 ul li {
     display: block;
-    margin-bottom: 5px;
+    margin: 5px 0px 5px 0px;
     text-align: left;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 .ct-button-holder {
     display: flex;
-    margin: 30px 10px 15px 0;
+    margin: 15px 10px 15px 0;
 }
 
 .ct-btn {
@@ -141,7 +160,7 @@ ul li {
     padding: 10px 15px 10px 15px;
     box-sizing: border-box;
     width: 100%;
-    margin: auto;
+    margin: 0px auto 15px;
     border: 1px solid #dddddd;
     border-radius: 4px;
     padding: 20px 0 20px 0;
@@ -163,7 +182,7 @@ ul li {
 }
 
 .contacts {
-    margin: 30px;
+    margin: 15px 30px 30px 30px;
     background-color: #fff;
     display: grid;
     text-align: center;
@@ -188,9 +207,17 @@ h2 {
 }
 
 #tags {
-    margin: 20px 0 0 0;
+    width: 100%;
+    margin: 20px auto 20px;
     display: flex;
     justify-content: center;
+    background-color: #F5F5F5;
+    overflow: auto;
+    white-space: nowrap;
+    border: 1px solid #dddddd; 
+    border-radius: 6px;
+    padding: 0 10px 0 50px;
+    box-sizing: border-box;
 }
 
 h3 {
@@ -357,6 +384,10 @@ footer a {
         display: flex;
     }
 
+    #tags {
+        width: 750px;
+
+    }
 
     hr {
         width: 750px;
@@ -401,6 +432,10 @@ footer a {
     hr {
         width: 970px;
     }
+
+    #tags {
+        width: 970px;
+    }
 }
 
 @media (min-width: 1200px){
@@ -414,6 +449,10 @@ footer a {
 
     fieldset {
         margin: 0 auto;
+    }
+
+    #tags {
+        width: 1170px;
     }
 }
 

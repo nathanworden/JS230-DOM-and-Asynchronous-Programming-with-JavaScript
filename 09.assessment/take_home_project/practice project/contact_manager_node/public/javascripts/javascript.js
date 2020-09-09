@@ -1,9 +1,18 @@
 $(function() {
     let App = {
         contactTemplate: Handlebars.compile($('#contact_template').html()),
+        tagsTemplate: Handlebars.compile($('#tags-template').html()),
         $contacts: $('.contacts'),
         contactIdNumber: 1,
-        theContext: {},
+        theContext: [],
+        seperateOutTags: function() {
+            // console.log(this.theContext.contacts);
+            this.theContext.contacts.forEach(contact => {
+                // console.log(contact.tags.split(', '));
+                let splitted = contact.tags.split(', ');
+                contact.tags = splitted;
+            })
+        },
         firstTimeMakingContactBtnClickable: true,
         aTest: {'theKey': 'theValue'},
         handleCancel: function() {
@@ -15,9 +24,9 @@ $(function() {
         makeAddContactClickable: function() {
             let theAddContactButtons = $(".add-contact-btn")
         
-            if (this.firstTimeMakingContactBtnClickable) {
+            if (this.firstTimeMakingContactBtnClickable || this.theContext.length < 1) {
                 theAddContactButtons.on("click", event => {
-                    console.log('click!');
+                    // console.log('click!');
                     $("#create-section").slideToggle(600);
                     $("article").slideToggle(600);
                     this.firstTimeMakingContactBtnClickable = false;
@@ -39,14 +48,28 @@ $(function() {
                 let filtered;
                 if (fromWhere === 'fromSearch') {
                     filtered = request.response.filter(contact => {
-                        return contact.full_name.includes(searchText);
+                        return contact.full_name.toLowerCase().includes(searchText.toLowerCase());
                     });
-                    console.log(filtered);
-                    console.log(searchText);
+                } else if (fromWhere === 'fromTags') {
+                    console.log(searchText)
+                    $(event.target).css('background-color', 'pink');
+                    filtered = request.response.filter(contact => {
+                        let result = contact.tags.includes(searchText);
+                        console.log(result);
+                        return result;
+                    });
                 }
 
-                fromWhere === 'fromSearch' ? that.theContext["contacts"] = filtered : that.theContext["contacts"]  = request.response;
+                console.log(filtered);
+                if (fromWhere === 'fromSearch' || fromWhere === 'fromTags') {
+                    that.theContext["contacts"] = filtered
+                } else {
+                    that.theContext["contacts"] = request.response;
+                }
+
+                this.seperateOutTags();
                 this.$contacts.html(this.contactTemplate(this.theContext));
+                $('#tags').html(this.tagsTemplate(this.theContext));
                 if (fromWhere === 'fromAdd') {
                     $('#create-section').slideToggle(600);
                     $("article").slideToggle(600);
@@ -57,6 +80,7 @@ $(function() {
                 }
                 this.addDeleteEventListener();
                 this.addEditEventListener();
+                this.addTagsEventListener();
 
                 if (request.response.length < 1) {
                     let h2 = document.createElement('h2');
@@ -105,7 +129,7 @@ $(function() {
                         let form = document.getElementById('form');
                         let freshEditForm = form.cloneNode(true);
                         freshEditForm.setAttribute('id', 'edit-form');
-                        console.log(freshEditForm.firstElementChild.innerHTML = 'Edit Contact');
+                        // console.log(freshEditForm.firstElementChild.innerHTML = 'Edit Contact');
 
                         freshEditForm.elements.full_name.value = json["full_name"];
                         freshEditForm.elements.phone_number.value = json["phone_number"];
@@ -146,7 +170,7 @@ $(function() {
                             }
 
                             data = keysAndValues.join('&');
-                            console.log(data);
+                            // console.log(data);
 
                             let request = new XMLHttpRequest();
                             request.open('PUT', `http://localhost:3000/api/contacts/${id}`)
@@ -168,6 +192,12 @@ $(function() {
                 });
 
                 request.send();
+            });
+        },
+        addTagsEventListener: function() {
+            // console.log('addTagsEvent Listener ran');
+            $(".contact-tags").on('click', event => {
+                this.buildTheContext('fromTags', event.target.innerHTML)
             });
         },
         handleAddContact: function() {
@@ -216,7 +246,7 @@ $(function() {
                 this.buildTheContext("fromSearch", searchText);
                 
             });
-            console.log(`searchBox: ${searchBox}`);
+            // console.log(`searchBox: ${searchBox}`);
         },
 
         init: function() {
