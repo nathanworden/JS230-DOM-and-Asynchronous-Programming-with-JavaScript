@@ -33,7 +33,7 @@ $(function() {
         buildTheContext: function(fromWhere, searchText) {
             let that = this;
             let request = new XMLHttpRequest();
-            request.open('GET', 'http://localhost:3000/api/contacts');
+            request.open('GET', 'api/contacts');
             request.responseType = 'json';
             request.addEventListener('load', event => {
                 let filtered;
@@ -114,7 +114,7 @@ $(function() {
             deleteBtn.on('click', event => {
                 let id = event.currentTarget.parentNode.parentNode.firstElementChild.innerHTML;
                 let request = new XMLHttpRequest();
-                request.open('DELETE', `http://localhost:3000/api/contacts/${id}`);
+                request.open('DELETE', `api/contacts/${id}`);
                 request.addEventListener('load', event => {
                     if (request.status === 204) {
                         this.buildTheContext('fromDelete');
@@ -131,7 +131,7 @@ $(function() {
             editBtn.on('click', event => {
                 let id = event.currentTarget.parentNode.parentNode.firstElementChild.innerHTML;
                 let request = new XMLHttpRequest();
-                request.open('GET', `http://localhost:3000/api/contacts/${id}`);
+                request.open('GET', `api/contacts/${id}`);
                 request.addEventListener('load', event => {
                     if (request.status === 200) {
                         let json = JSON.parse(request.responseText);
@@ -178,10 +178,9 @@ $(function() {
                             }
 
                             data = keysAndValues.join('&');
-                            // console.log(data);
 
                             let request = new XMLHttpRequest();
-                            request.open('PUT', `http://localhost:3000/api/contacts/${id}`)
+                            request.open('PUT', `api/contacts/${id}`)
                             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                             request.addEventListener('load', () => {
                                 if (request.status === 201) {
@@ -237,7 +236,7 @@ $(function() {
                 let data = keysAndValues.join('&');
 
                 let request = new XMLHttpRequest();
-                request.open('POST', 'http://localhost:3000/api/contacts');
+                request.open('POST', 'api/contacts');
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 request.addEventListener('load', () => {
                     if (request.status === 201) {
